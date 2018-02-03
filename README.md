@@ -1,5 +1,48 @@
 ## 深度系统原创应用打包
 
+
+
+[![Build Status](https://travis-ci.org/qanno/deepin-screenshot.svg?branch=master)](https://travis-ci.org/qanno/deepin-screenshot)
+
+### 方式一：Docker 自动化打包
+
+仓库： https://github.com/qanno/deepin-screenshot
+
+1. `chmod +x ./Deepin_Screenshot-x86_64.AppImage `
+
+2. `./Deepin_Screenshot-x86_64.AppImage --appimage-extract`  
+
+3. 删除 展开后其目录下的 `./usr/lib/libsystemd.so.0`
+
+4. 删除原有的 AppRun，然后添加新的 AppRun ，其内容:
+
+   ```bash
+   #!/bin/bash
+   SCRIPT_DIR=$(cd `dirname "$0"`; pwd)
+   BASE_DIR=`dirname "$SCRIPT_DIR"`
+
+   LD_LIBRARY_PATH="${SCRIPT_DIR}/usr/lib:$LD_LIBRARY_PATH"
+   if [ ! -z "$APPIMAGE_WORKDIR" ]; then
+   	if ! cd "$APPIMAGE_WORKDIR"; then
+   		echo "Cannot change directory to \"$APPIMAGE_WORKDIR\" (APPIMAGE_WORKDIR)"
+   		exit 1
+   	fi
+   fi
+   if [ "$1" = "--appimage-exec" ]; then
+   	if ! "${@:2}"; then
+   		exit 1
+   	fi
+   else
+   	if !  env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY LD_LIBRARY_PATH=$LD_LIBRARY_PATH "$SCRIPT_DIR/usr/bin/deepin-screenshot" "--icon"; then
+   		exit 1
+   	fi
+   fi
+   ```
+
+   最后重新用 appimagetool 打包。
+
+### 方式二： 手动打包
+
 [深度系统](https://www.deepin.org)有很多的原创的优秀应用，比如：深度截图、深度录屏、深度录音、深度音乐、深度日历等，可惜它们默认只能在深度的桌面环境下运行。对于上述应用可以采用此 [PPA](https://launchpad.net/~leaeasy/+archive/ubuntu/dde) 来安装(**需要 Ubuntu 17.04+**)：
 
 ```

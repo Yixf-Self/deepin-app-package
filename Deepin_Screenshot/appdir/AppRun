@@ -1,0 +1,20 @@
+#!/bin/bash
+SCRIPT_DIR=$(cd `dirname "$0"`; pwd)
+BASE_DIR=`dirname "$SCRIPT_DIR"`
+
+LD_LIBRARY_PATH="${SCRIPT_DIR}/usr/lib:$LD_LIBRARY_PATH"
+if [ ! -z "$APPIMAGE_WORKDIR" ]; then
+	if ! cd "$APPIMAGE_WORKDIR"; then
+		echo "Cannot change directory to \"$APPIMAGE_WORKDIR\" (APPIMAGE_WORKDIR)"
+		exit 1
+	fi
+fi
+if [ "$1" = "--appimage-exec" ]; then
+	if ! "${@:2}"; then
+		exit 1
+	fi
+else
+	if !  env DISPLAY=$DISPLAY XAUTHORITY=$XAUTHORITY LD_LIBRARY_PATH=$LD_LIBRARY_PATH "$SCRIPT_DIR/usr/bin/deepin-screenshot" "--icon"; then
+		exit 1
+	fi
+fi
