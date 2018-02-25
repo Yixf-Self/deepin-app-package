@@ -3,6 +3,8 @@
 
 
 [![Build Status](https://travis-ci.org/qanno/deepin-screenshot.svg?branch=master)](https://travis-ci.org/qanno/deepin-screenshot)
+[![Downloads](https://img.shields.io/github/downloads/ZetaoYang/deepin-app-package/latest/total.svg)](https://github.com/ZetaoYang/deepin-app-package)
+
 
 ### 方式一：Docker 自动化打包
 
