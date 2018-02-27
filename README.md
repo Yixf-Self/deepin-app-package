@@ -116,4 +116,4 @@ libgpg-error.so.0
 
 
 
-暂时只给出 深度截图 的 AppImage 与 Portable 。(目前也比较粗糙)
+暂时只能给出 深度截图 的 AppImage 。
